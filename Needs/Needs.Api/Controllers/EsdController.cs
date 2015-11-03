@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Description;
 using Needs.Api.Models;
 
 using MongoDB.Driver;
@@ -17,9 +19,11 @@ namespace Needs.Api.Controllers
 
         [Route(Order = 5)]
         [HttpGet]
-        public IHttpActionResult List(string type)
+        [ResponseType(typeof(IList<EsdEntry>))]]
+        public async Task<IHttpActionResult> List(string type)
         {
-            return Ok(mdb.GetCollection<EsdEntry>(type));
+            var data = await mdb.GetCollection<EsdEntry>(type).AsQueryable().ToListAsync();
+            return Ok(data);
         }
     }
 }
