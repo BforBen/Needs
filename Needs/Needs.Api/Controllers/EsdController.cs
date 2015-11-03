@@ -15,8 +15,8 @@ namespace Needs.Api.Controllers
     [RoutePrefix("{type}")]
     public class EsdController : ApiController
     {
-        IMongoDatabase mdb = new MongoClient("mongodb://api:Guildford1#@ds034198.mongolab.com:34198").GetDatabase("gbc-needs");
-
+        IMongoDatabase mdb = new MongoClient("mongodb://api:Guildford1%23@ds034198.mongolab.com:34198").GetDatabase("gbc-needs");
+        
         [Route(Order = 5)]
         [HttpGet]
         [ResponseType(typeof(IList<EsdEntry>))]

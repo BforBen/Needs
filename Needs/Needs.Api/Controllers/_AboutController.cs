@@ -9,7 +9,7 @@ namespace Needs.Api.Controllers
 {
     public class _AboutController : ApiController
     {
-        [Route("_about", Order = 1)]
+        [Route("~/_about", Order = 1)]
         [HttpGet]
         public IHttpActionResult About()
         {
@@ -17,7 +17,7 @@ namespace Needs.Api.Controllers
             return Ok(String.Format("{0}.{1}.{2}", Ver.Major, Ver.Minor, Ver.Build));
         }
 
-        [Route("_hello", Order = 1)]
+        [Route("~/_hello", Order = 1)]
         [HttpGet]
         public IHttpActionResult Hello()
         {
