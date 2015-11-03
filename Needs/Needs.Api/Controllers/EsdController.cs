@@ -19,7 +19,7 @@ namespace Needs.Api.Controllers
 
         [Route(Order = 5)]
         [HttpGet]
-        [ResponseType(typeof(IList<EsdEntry>))]]
+        [ResponseType(typeof(IList<EsdEntry>))]
         public async Task<IHttpActionResult> List(string type)
         {
             var data = await mdb.GetCollection<EsdEntry>(type).AsQueryable().ToListAsync();
