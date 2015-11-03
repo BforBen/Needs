@@ -15,7 +15,7 @@ namespace Needs.Api.Controllers
     {
         IMongoDatabase mdb = new MongoClient("mongodb://api:Guildford1#@ds034198.mongolab.com:34198").GetDatabase("gbc-needs");
 
-        [Route]
+        [Route(Order = 5)]
         [HttpGet]
         public IHttpActionResult List(string type)
         {

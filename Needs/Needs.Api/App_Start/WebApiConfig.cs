@@ -15,6 +15,8 @@ namespace Needs.Api
 
             // Web API routes
             config.MapHttpAttributeRoutes();
+
+            config.IncludeErrorDetailPolicy = IncludeErrorDetailPolicy.Always;
         }
     }
 }
