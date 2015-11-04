@@ -18,8 +18,6 @@ namespace Needs.Api.Controllers
         [ResponseType(typeof(IList<EsdEntry>))]
         public async Task<IHttpActionResult> List(string type, int? id = null)
         {
-            await mdb.GetCollection<EsdEntry>("_test").InsertOneAsync(new EsdEntry { Label = "Test", Description = "Just a test at " + System.DateTime.Now.ToString() });
-
             FilterDefinition<EsdEntry> filter = Builders<EsdEntry>.Filter.Empty;
 
             if (id.HasValue)
