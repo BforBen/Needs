@@ -23,7 +23,7 @@ namespace Needs.Api.Controllers
         [ResponseType(typeof(IList<EsdEntry>))]
         public async Task<IHttpActionResult> List(string type, int? id = null)
         {
-            FilterDefinition<EsdEntry> filter = null;
+            FilterDefinition<EsdEntry> filter = Builders<EsdEntry>.Filter.Empty;
 
             if (id.HasValue)
             {
