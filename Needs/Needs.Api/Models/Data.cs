@@ -10,7 +10,7 @@ namespace Needs.Api.Models
             ParentEsdIds = new Collection<int>();
         }
 
-        [MongoDB.Bson.Serialization.Attributes.BsonElement]
+        //[MongoDB.Bson.Serialization.Attributes.BsonElement]
         public int Id { get; set; }
 
         public int EsdId { get; set; }
