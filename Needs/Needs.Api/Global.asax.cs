@@ -1,7 +1,7 @@
 ﻿using System.Web.Http;
 
-using System.Threading.Tasks;
-using MongoDB.Driver;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Conventions;
 
 namespace Needs.Api
 {
@@ -11,7 +11,10 @@ namespace Needs.Api
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
 
-            MongoDB.Bson.Serialization.BsonClassMap.RegisterClassMap<Models.EsdEntry>();
+            var camelConvention = new ConventionPack { new CamelCaseElementNameConvention() };
+            ConventionRegistry.Register("CamelCase", camelConvention, type => true);
+
+            BsonClassMap.RegisterClassMap<Models.EsdEntry>();
         }
     }
 }
