@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace Needs.Api.Models
 {
@@ -10,8 +11,8 @@ namespace Needs.Api.Models
             ParentEsdIds = new Collection<int>();
         }
 
-        //[MongoDB.Bson.Serialization.Attributes.BsonElement]
-        public int Id { get; set; }
+        [BsonId(IdGenerator = typeof(FlakeIdGenerator))]
+        public long Id { get; set; }
 
         public int EsdId { get; set; }
         public string Label { get; set; }
