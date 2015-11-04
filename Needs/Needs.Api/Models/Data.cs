@@ -10,6 +10,8 @@ namespace Needs.Api.Models
             ParentEsdIds = new Collection<int>();
         }
 
+        public int Id { get; set; }
+
         public int EsdId { get; set; }
         public string Label { get; set; }
         public Collection<string>  AlternateLabels { get; set; }
