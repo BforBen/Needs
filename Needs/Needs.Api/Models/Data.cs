@@ -7,12 +7,13 @@ namespace Needs.Api.Models
     {
         public EsdEntry()
         {
+            Id = IdGen.Instance.GenerateId();
             AlternateLabels = new Collection<string>();
             ParentEsdIds = new Collection<int>();
         }
 
         [BsonId(IdGenerator = typeof(FlakeIdGenerator))]
-        public long Id { get; set; }
+        public long Id { get; private set; }
 
         public int EsdId { get; set; }
         public string Label { get; set; }
