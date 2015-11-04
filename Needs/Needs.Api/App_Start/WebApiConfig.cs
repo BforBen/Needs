@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using System.Web.Http;
+using System.Linq;
 
 namespace Needs.Api
 {
@@ -8,6 +9,10 @@ namespace Needs.Api
     {
         public static void Register(HttpConfiguration config)
         {
+            // Remove XML as default type
+            var appXmlType = config.Formatters.XmlFormatter.SupportedMediaTypes.FirstOrDefault(t => t.MediaType == "application/xml");
+            config.Formatters.XmlFormatter.SupportedMediaTypes.Remove(appXmlType);
+
             // Web API configuration and services
             var settings = GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings;
             settings.Formatting = Formatting.Indented;
