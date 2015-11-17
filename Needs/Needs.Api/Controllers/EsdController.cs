@@ -14,16 +14,16 @@ namespace Needs.Api.Controllers
     {
         IMongoDatabase mdb = new MongoClient("mongodb://api:Guildford1@ds034198.mongolab.com:34198/gbc-needs").GetDatabase("gbc-needs");
         
-        [Route("{id:int?}")]
+        [Route("{id:long?}")]
         [HttpGet]
         [ResponseType(typeof(IList<EsdEntry>))]
-        public async Task<IHttpActionResult> List(string type, int? id = null)
+        public async Task<IHttpActionResult> List(string type, long? id = null)
         {
             FilterDefinition<EsdEntry> filter = Builders<EsdEntry>.Filter.Empty;
 
             if (id.HasValue)
             {
-                filter = Builders<EsdEntry>.Filter.Eq<int>("id", id.Value);
+                filter = Builders<EsdEntry>.Filter.Eq<long>("id", id.Value);
             }
 
             var data = await mdb.GetCollection<EsdEntry>(type).FindAsync(filter);
@@ -40,12 +40,12 @@ namespace Needs.Api.Controllers
             return Created("", entry);
         }
 
-        [Route("{id:int}")]
+        [Route("{id:long}")]
         [HttpPost]
         [ResponseType(typeof(EsdEntry))]
-        public async Task<IHttpActionResult> Edit(string type, int id, Newtonsoft.Json.Linq.JObject entry)
+        public async Task<IHttpActionResult> Edit(string type, long id, Newtonsoft.Json.Linq.JObject entry)
         {
-            FilterDefinition<EsdEntry> filter =  Builders<EsdEntry>.Filter.Eq<int>("id", id);
+            FilterDefinition<EsdEntry> filter =  Builders<EsdEntry>.Filter.Eq<long>("id", id);
 
             UpdateDefinition<EsdEntry> update = null;
 
