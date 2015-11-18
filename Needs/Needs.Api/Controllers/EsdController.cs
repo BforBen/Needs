@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using Needs.Api.Models;
-
+using System.Linq;
 using MongoDB.Driver;
 
 namespace Needs.Api.Controllers
@@ -13,20 +13,30 @@ namespace Needs.Api.Controllers
     {
         IMongoDatabase mdb = new MongoClient("mongodb://api:Guildford1@ds034198.mongolab.com:34198/gbc-needs").GetDatabase("gbc-needs");
         
-        [Route("{id:long?}", Name = "EsdDetails")]
+        [Route]
         [HttpGet]
         [ResponseType(typeof(IList<EsdEntry>))]
-        public async Task<IHttpActionResult> List(string type, long? id = null)
+        public async Task<IHttpActionResult> List(string type)
         {
             FilterDefinition<EsdEntry> filter = Builders<EsdEntry>.Filter.Empty;
 
-            if (id.HasValue)
-            {
-                filter = Builders<EsdEntry>.Filter.Eq<long>("_id", id.Value);
-            }
+            var data = await mdb.GetCollection<EsdEntry>(type).FindAsync(filter);
+
+            return Ok(await data.ToListAsync());
+        }
+
+        [Route("{id:long}", Name = "EsdDetails")]
+        [HttpGet]
+        [ResponseType(typeof(EsdEntry))]
+        public async Task<IHttpActionResult> Detail(string type, long id)
+        {
+            FilterDefinition<EsdEntry> filter = Builders<EsdEntry>.Filter.Eq<long>("_id", id);
 
             var data = await mdb.GetCollection<EsdEntry>(type).FindAsync(filter);
-            return Ok(await data.ToListAsync());
+
+            var list = await data.ToListAsync();
+
+            return Ok(list.FirstOrDefault());
         }
 
         [Route]
@@ -35,7 +45,7 @@ namespace Needs.Api.Controllers
         public async Task<IHttpActionResult> New(string type, EsdEntry entry)
         {
             await mdb.GetCollection<EsdEntry>(type).InsertOneAsync(entry);
-            return Created(Url.Link("EsdDetails", new { id = entry.Id }), entry);
+            return Created(Url.Link("EsdDetails", new { id = entry.Id, type = type }), entry);
         }
 
         [Route("{id:long}")]
