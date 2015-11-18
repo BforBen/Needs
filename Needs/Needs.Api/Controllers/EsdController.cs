@@ -14,7 +14,7 @@ namespace Needs.Api.Controllers
     {
         IMongoDatabase mdb = new MongoClient("mongodb://api:Guildford1@ds034198.mongolab.com:34198/gbc-needs").GetDatabase("gbc-needs");
         
-        [Route("{id:long?}")]
+        [Route("{id:long?}", Name = "EsdDetails")]
         [HttpGet]
         [ResponseType(typeof(IList<EsdEntry>))]
         public async Task<IHttpActionResult> List(string type, long? id = null)
@@ -36,8 +36,7 @@ namespace Needs.Api.Controllers
         public async Task<IHttpActionResult> New(string type, EsdEntry entry)
         {
             await mdb.GetCollection<EsdEntry>(type).InsertOneAsync(entry);
-
-            return Created("", entry);
+            return Created(Url.Link("EsdDetails", new { id = entry.Id }), entry);
         }
 
         [Route("{id:long}")]
@@ -51,9 +50,17 @@ namespace Needs.Api.Controllers
 
             foreach(var j in entry)
             {
-                update.Set(j.Key, j.Value);
+                if (j.Key != "id")
+                {
+                    update.Set(j.Key, j.Value);
+                }
             }
             
+            if (update == null)
+            {
+                return BadRequest();
+            }
+
             var data = await mdb.GetCollection<EsdEntry>(type).FindOneAndUpdateAsync(filter, update);
 
             return Ok(data);
