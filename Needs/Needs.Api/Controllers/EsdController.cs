@@ -36,7 +36,7 @@ namespace Needs.Api.Controllers
 
             var list = await data.ToListAsync();
 
-            return Ok(list.FirstOrDefault());
+            return Ok(list.SingleOrDefault());
         }
 
         [Route]
@@ -51,7 +51,7 @@ namespace Needs.Api.Controllers
         [Route("{id:long}")]
         [HttpPost]
         [ResponseType(typeof(EsdEntry))]
-        public async Task<IHttpActionResult> Edit(string type, long id, Newtonsoft.Json.Linq.JObject entry)
+        public async Task<IHttpActionResult> Edit(string type, long id, [FromBody]Newtonsoft.Json.Linq.JObject entry)
         {
             FilterDefinition<EsdEntry> filter =  Builders<EsdEntry>.Filter.Eq<long>("_id", id);
 
