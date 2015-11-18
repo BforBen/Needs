@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
@@ -23,7 +22,7 @@ namespace Needs.Api.Controllers
 
             if (id.HasValue)
             {
-                filter = Builders<EsdEntry>.Filter.Eq<long>("id", id.Value);
+                filter = Builders<EsdEntry>.Filter.Eq<long>("_id", id.Value);
             }
 
             var data = await mdb.GetCollection<EsdEntry>(type).FindAsync(filter);
@@ -44,7 +43,7 @@ namespace Needs.Api.Controllers
         [ResponseType(typeof(EsdEntry))]
         public async Task<IHttpActionResult> Edit(string type, long id, Newtonsoft.Json.Linq.JObject entry)
         {
-            FilterDefinition<EsdEntry> filter =  Builders<EsdEntry>.Filter.Eq<long>("id", id);
+            FilterDefinition<EsdEntry> filter =  Builders<EsdEntry>.Filter.Eq<long>("_id", id);
 
             UpdateDefinition<EsdEntry> update = null;
 
@@ -69,9 +68,9 @@ namespace Needs.Api.Controllers
         [Route("{id:int}")]
         [HttpDelete]
         [ResponseType(typeof(bool))]
-        public async Task<IHttpActionResult> Delete(string type, int id)
+        public async Task<IHttpActionResult> Delete(string type, long id)
         {
-            FilterDefinition<EsdEntry> filter = Builders<EsdEntry>.Filter.Eq<int>("id", id);
+            FilterDefinition<EsdEntry> filter = Builders<EsdEntry>.Filter.Eq<long>("_id", id);
 
             var data = await mdb.GetCollection<EsdEntry>(type).DeleteOneAsync(filter);
 
